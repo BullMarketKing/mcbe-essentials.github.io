@@ -121,60 +121,6 @@ function sf_makeLootTables(struct, fileName) {
   return outLootTables;
 }
 
-function fixStruct(oStruct, structFilename) {
-  // Get reference to tiles.
-  var oEntities = oStruct.value.structure.value.entities.value.value;
-  var oTileEntities;
-  if(oStruct.value.structure.value.palette.value.default){
-    oTileEntities = Object.values(oStruct.value.structure.value.palette.value.default.value.block_position_data.value);
-  } else {
-    throw "There are no tile entities in the structure.";
-  }
-
-  // Find container tiles.
-  var cTileIndecies = [];
-  for(var i = 0; i < oTileEntities.length; i++){
-    if(oTileEntities[i].value.block_entity_data){
-      var name = oTileEntities[i].value.block_entity_data.value.id.value;
-      if(Object.keys(allTEntities).includes(name)
-        && allTEntities[name].type == "container"
-        && !allTEntities[name].behavior){
-        // PON: oTileEntities[i] is container.
-        cTileIndecies.push(i);
-      }
-    }
-  }
-
-  // Generate unique container names.
-  // cNames is array of names indexed by tile index.
-  var cNames = sf_nameContainers(oTileEntities, cTileIndecies);
-
-  var lootTables = [];
-  for(var i = 0; i < cTileIndecies.length; i++) {
-    // Get container tile.
-    var cTileIdx = cTileIndecies[i];
-    var cTile = oTileEntities[cTileIdx];
-    var cName = cNames[cTileIdx];
-
-    // Log container tile position.
-    var cPosition = sf_getTilePosition(oStruct, cTile);
-    console.log('Container position: ' + JSON.stringify(cPosition));
-
-    // Log container detail.
-    sf_traceContainer(cTile);
-
-    // Make loot table.
-    var lootTable = sf_makeLootTable(cTile);
-    lootTables.push(lootTable);
-
-    // Make changes to container.
-    sf_setLookTable(cTile, structFilename, cName);
-    //sf_clearContainer(cTile);
-  }
-
-  return lootTables;
-}
-
 function sf_getContainerTiles(oStruct) {
   // Get reference to tiles.
   var oTileEntities;
