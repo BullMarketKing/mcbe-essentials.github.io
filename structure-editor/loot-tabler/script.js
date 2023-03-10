@@ -209,6 +209,7 @@ for(var i = 0; i < 27; i++){
 }
 
 function downloadStructure(){
+  debugger;
   exportFile(new File([nbt.writeUncompressed(structure, 'little')], "hello.mcstructure"), filename);
 }
 
