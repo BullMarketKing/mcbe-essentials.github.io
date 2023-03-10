@@ -42,7 +42,7 @@ function openDevWindow(){
 }
 
 if(location.protocol != "https:"){
-window.location.href= (window.location.href).replaceAll("http:", "https:")
+//window.location.href= (window.location.href).replaceAll("http:", "https:")
 }
 
 if(location.href[location.href.length-1] != "/" && location.pathname != "/loopr/" && !location.href.endsWith(".html")){
